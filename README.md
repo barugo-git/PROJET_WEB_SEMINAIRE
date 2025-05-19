@@ -2,10 +2,10 @@
 ## Présentation du projet
 
 ### Page d'accueil
-![Page d'accueil](images/page_accueil.png)
+![Page d'accueil](images/pade_Accueil.png)
 
 ### Formulaire de connexion
-![Login](images/connexion.png)
+![Login](images/Connexion.png)
 
 ## Comment exécuter ce projet
 
