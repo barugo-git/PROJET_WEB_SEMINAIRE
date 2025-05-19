@@ -1,0 +1,230 @@
+{% extends 'layouts/base_admin.html.twig' %}
+
+{% block title %}Dashboard Administrateur{% endblock %}
+
+{% block body %}
+<main class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-tachometer-alt me-2"></i>Dashboard Administrateur
+        </h2>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-download me-1"></i> Exporter
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="fas fa-file-pdf me-1"></i> PDF</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-file-excel me-1"></i> Excel</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Cartes de statistiques -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+        <div class="col">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Utilisateurs</h5>
+                            <h3 class="card-text">{{ stats.totalUsers|default(0) }}</h3>
+                        </div>
+                        <i class="fas fa-users fa-3x text-primary"></i>
+                    </div>
+                    <div class="mt-2">
+                        <span class="badge bg-info">{{ stats.presenters|default(0) }} présentateurs</span>
+                        <span class="badge bg-dark ms-1">{{ stats.admins|default(0) }} admins</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="#" class="btn btn-sm btn-outline-primary">
+                        Voir détails <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Demandes</h5>
+                            <h3 class="card-text">{{ stats.totalRequests|default(0) }}</h3>
+                        </div>
+                        <i class="fas fa-clipboard-list fa-3x text-warning"></i>
+                    </div>
+                    <div class="mt-2">
+                        <span class="badge bg-warning">{{ stats.pending|default(0) }} en attente</span>
+                        <span class="badge bg-success ms-1">{{ stats.approved|default(0) }} approuvés</span>
+                        <span class="badge bg-danger ms-1">{{ stats.rejected|default(0) }} rejetés</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="#" class="btn btn-sm btn-outline-warning">
+                        Voir détails <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Présentations</h5>
+                            <h3 class="card-text">{{ stats.presentations|default(0) }}</h3>
+                        </div>
+                        <i class="fas fa-file-powerpoint fa-3x text-success"></i>
+                    </div>
+                    <div class="mt-2">
+                        <span class="badge bg-secondary">{{ (stats.approved - stats.presentations)|default(0) }} manquantes</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="#" class="btn btn-sm btn-outline-success">
+                        Voir planning <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted">Activité</h5>
+                            <h3 class="card-text">{{ 'now'|date('d/m/Y') }}</h3>
+                        </div>
+                        <i class="fas fa-chart-line fa-3x text-info"></i>
+                    </div>
+                    <div class="mt-2">
+                        <span class="badge bg-primary">{{ upcomingSeminars|length }} séminaires à venir</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="#" class="btn btn-sm btn-outline-info">
+                        Voir inscriptions <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Dernières demandes -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="h5 mb-0">
+                        <i class="fas fa-clock me-2"></i>Dernières demandes
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if latestRequests is not empty %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Thème</th>
+                                        <th>Présentateur</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for request in latestRequests %}
+                                        <tr>
+                                            <td>{{ request.theme|e }}</td>
+                                            <td>
+                                                {% if request.presenter is not null %}
+                                                    {{ request.presenter.nom|e }}
+                                                {% else %}
+                                                    <em>Inconnu</em>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ request.dateSouhaitee|date('d/m/Y') }}</td>
+                                            <td>
+                                                {% set badgeClass = {
+                                                    'en_attente': 'bg-warning',
+                                                    'valide': 'bg-success',
+                                                    'rejete': 'bg-danger'
+                                                }[request.statut] ?? 'bg-secondary' %}
+                                                <span class="badge {{ badgeClass }}">
+                                                    {{ request.statut|replace({'_': ' '})|capitalize }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mb-0">
+                            Aucune demande récente
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="#" class="btn btn-sm btn-primary">
+                        Voir toutes les demandes <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prochains séminaires -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h3 class="h5 mb-0">
+                        <i class="fas fa-calendar-alt me-2"></i>Prochains séminaires
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if upcomingSeminars is not empty %}
+                        <div class="list-group">
+                            {% for seminar in upcomingSeminars %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ seminar.demande.theme|e }}</h5>
+                                        <small>{{ seminar.dateSeminaire|date('d/m/Y') }}</small>
+                                    </div>
+                                    <p class="mb-1">
+                                        <i class="fas fa-user-tie me-1"></i>
+                                        {% if seminar.demande.user is not null %}
+                                            {{ seminar.demande.user.nom|e }}
+                                        {% else %}
+                                            <em>Présentateur inconnu</em>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mb-0">
+                            Aucun séminaire prévu
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="#" class="btn btn-sm btn-success">
+                        Voir le planning complet <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton de déconnexion -->
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('app_logout') }}" class="btn btn-danger">
+            <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+        </a>
+    </div>
+
+</main>
+{% endblock %}

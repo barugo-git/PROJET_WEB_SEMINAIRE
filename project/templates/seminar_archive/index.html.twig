@@ -1,0 +1,94 @@
+{# templates/seminar/archive.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Archives des Séminaires{% endblock %}
+
+{% block body %}
+<main class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="border-bottom pb-2">Archives des séminaires</h2>
+
+            <!-- Barre de recherche -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <form method="get" class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Rechercher..." 
+                               value="{{ app.request.query.get('search') }}">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% if seminars is empty %}
+                <div class="alert alert-info">
+                    Aucune présentation archivée pour le moment.
+                </div>
+            {% else %}
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for seminar in seminars %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="card-title mb-0">{{ seminar.theme }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <strong><i class="far fa-calendar-alt me-1"></i> Date :</strong> 
+                                        {{ seminar.date_seminaire|date('d/m/Y') }}
+                                    </p>
+                                    <p class="card-text">
+                                        <strong><i class="fas fa-user-tie me-1"></i> Présentateur :</strong> 
+                                        {{ seminar.nom }}
+                                    </p>
+                                    <p class="card-text">
+                                        <strong><i class="fas fa-align-left me-1"></i> Résumé :</strong>
+                                        {{ seminar.resume|nl2br }}
+                                    </p>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <a href="{{ path('seminar_details', {id: seminar.id}) }}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                       <i class="fas fa-info-circle me-1"></i> Détails
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if totalPages > 1 %}
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if currentPage > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ currentPage - 1 }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for i in 1..totalPages %}
+                                <li class="page-item {% if i == currentPage %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                </li>
+                            {% endfor %}
+
+                            {% if currentPage < totalPages %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ currentPage + 1 }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

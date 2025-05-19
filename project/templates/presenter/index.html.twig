@@ -1,0 +1,62 @@
+{% extends 'base_presenter.html.twig' %}
+
+{% block title %}Mes demandes{% endblock %}
+
+{% block body %}
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Mes demandes de séminaire</h2>
+        <a href="{{ path('presenter_submit') }}" class="btn btn-primary">Nouvelle demande</a>
+    </div>
+
+    {% if requests is empty %}
+        <div class="alert alert-info">
+            Vous n'avez pas encore soumis de demande de séminaire.
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Thème</th>
+                        <th>Date de présentation</th>
+                        <th>Statut</th>
+                        <th>Présentation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in requests %}
+                        <tr>
+                            <td>{{ req.topic }}</td>
+                            <td>{{ req.presentationDate ? req.presentationDate|date('d/m/Y') : '-' }}</td>
+                            <td>
+                                {% set status_class = {
+                                    'valide': 'bg-success',
+                                    'en_attente': 'bg-warning text-dark',
+                                    'rejete': 'bg-danger'
+                                }[req.statut]|default('bg-secondary') %}
+                                <span class="badge rounded-pill {{ status_class }}">
+                                    {{ req.statut|replace({'_': ' '})|capitalize }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if req.programmations|length > 0 %}
+                                    <span class="text-success">✔️ Déposée</span>
+                                {% else %}
+                                    <span class="text-danger">❌ Manquante</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if req.statut == 'valide' and req.programmations|length == 0 %}
+                                    <a href="{{ path('presenter_upload', { request_id: req.id }) }}" class="btn btn-sm btn-outline-primary">Uploader</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</main>
+{% endblock %}
