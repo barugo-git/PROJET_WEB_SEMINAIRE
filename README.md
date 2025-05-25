@@ -1,10 +1,66 @@
+📚 Plateforme de Gestion des Séminaires
 
-## Présentation du projet
-    Pour la réalistion de ce projet j'ai utilisé boostrap , symphony,mariadb , phpmyadmin
-    docker , docker compose, nginx et puis vscode . Pour résumer chaque personne peut s'inscrire en tant que administrateur ou un présenteur de 
-    theme  afin de se connecter à son propre espace . L'espace presenteur  permet de faire un suivi de ses demandes , de soummettre ses demandes.
-    Alors que l'espace administrateur permet de voir tous les demandes envoyées et de pouvoir valider ou non les demandes puis de les programmées . Enfin j'ai des pages publics c'est-à-dire 
-    tout le monde à acces a ces pages pour pouvoir voir les semiaires programmés afin d'y assiter ou de télécharger des séminaires passées(archives) 
+Ce projet est une plateforme web complète développée pour faciliter la gestion, la programmation et la consultation de séminaires académiques ou professionnels. Il repose sur une architecture moderne avec Docker et Symfony, et propose des interfaces adaptées aux différents types d'utilisateurs.
+🛠️ Technologies utilisées
+
+    Symfony – Framework PHP pour une structure MVC robuste
+
+    MariaDB – Système de gestion de base de données relationnelle
+
+    phpMyAdmin – Interface d'administration de la base de données
+
+    Bootstrap – Framework CSS pour une interface responsive et moderne
+
+    Docker & Docker Compose – Conteneurisation de l'application pour faciliter le déploiement
+
+    Nginx – Serveur web utilisé comme reverse proxy
+
+    VS Code – Environnement de développement
+
+👤 Types d'utilisateurs
+1. Présentateur
+
+Les utilisateurs inscrits comme présentateurs disposent d'un espace personnel leur permettant de :
+
+    Soumettre des demandes de séminaire
+
+    Suivre le statut de leurs demandes
+
+2. Administrateur
+
+Les administrateurs ont accès à un espace de gestion permettant :
+
+    De consulter toutes les demandes soumises
+
+    De valider ou refuser les demandes
+
+    De programmer les séminaires acceptés
+
+🌍 Pages publiques
+
+Les visiteurs non connectés peuvent :
+
+    Consulter la liste des séminaires programmés
+
+    Télécharger les présentations des séminaires passés (archives)
+
+    Accéder aux informations générales de la plateforme
+
+🚀 Fonctionnalités principales
+
+    Authentification sécurisée (administrateur ou présentateur)
+
+    Soumission et suivi des demandes de séminaire
+
+    Validation, refus et programmation des séminaires par les administrateurs
+
+    Affichage des séminaires ouverts au public
+
+    Téléchargement des archives des séminaires
+
+    Interface responsive avec Bootstrap
+
+    Déploiement simplifié grâce à Docker et Docker Compose
 
 ### Page d'accueil
 ![Page d'accueil](images/pade_Accueil.png)
