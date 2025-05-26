@@ -31,8 +31,8 @@
                 <tbody>
                     {% for req in requests %}
                         <tr>
-                            <td>{{ req.topic | e }}</td>
-                            <td>{{ req.presentationDate ? req.presentationDate|date('d/m/Y') : '-' }}</td>
+                            <td>{{ req.theme|e }}</td>
+                            <td>{{ req.dateSoumission ? req.dateSoumission|date('d/m/Y H:i') : '-' }}</td>
                             <td>
                                 {% set badgeClass = {
                                     'valide': 'bg-success',
@@ -57,7 +57,7 @@
                             </td>
                             <td>
                                 {% if req.statut == 'valide' and req.presentationCount == 0 %}
-                                    <a href="{{ path('presenter_upload', {'request_id': req.id}) }}" 
+                                    <a href="#" 
                                        class="btn btn-sm btn-outline-primary"
                                        data-bs-toggle="tooltip" title="Envoyer votre présentation">
                                         <i class="fas fa-upload me-1"></i> Uploader

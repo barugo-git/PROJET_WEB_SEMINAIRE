@@ -52,11 +52,14 @@ class Demandes
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $presentation_date = null;
-
+    
     public function __construct()
-    {
-        $this->programmations = new ArrayCollection();
-    }
+{
+    $this->programmations = new ArrayCollection();
+    $this->statut = 'en attente';
+}
+
+    
 
     public function getId(): ?int
     {

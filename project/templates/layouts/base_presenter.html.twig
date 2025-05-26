@@ -25,21 +25,22 @@
         <div class="container py-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <a href="{{ path('presenter_dashboard') }} " class="text-white text-decoration-none">
+                    <a href="{{ path('presenter_dashboard') }}" class="text-white text-decoration-none">
                         <i class="fas fa-chalkboard-teacher fs-4 me-2"></i>
                         <span class="fs-4 fw-bold">Espace Présentateur</span>
                     </a>
                 </div>
+                {% if app.session.get('user') %}
                 <div class="dropdown">
                     <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center"
                             type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle me-2"></i>
-                        <span class="d-none d-sm-inline">{{ user.name }}</span>
+                        <span class="d-none d-sm-inline">{{ app.session.get('user').name }}</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li>
                             <span class="dropdown-item-text small">
-                                <i class="fas fa-envelope me-1"></i> {{ user.email }}
+                                <i class="fas fa-envelope me-1"></i> {{ app.session.get('user').email }}
                             </span>
                         </li>
                         <li><hr class="dropdown-divider"></li>
@@ -50,6 +51,9 @@
                         </li>
                     </ul>
                 </div>
+                {% else %}
+                    <span class="text-warning">Utilisateur non connecté</span>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -72,7 +76,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.get('_route') == 'presenter_submit' %}active{% endif %}" 
-                           href="#<!--{{ path('presenter_submit') }}-->">
+                           href="#">
                            <i class="fas fa-plus-circle me-1"></i> Nouvelle demande
                         </a>
                     </li>
