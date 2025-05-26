@@ -63,10 +63,12 @@ Les visiteurs non connectés peuvent :
     Déploiement simplifié grâce à Docker et Docker Compose
 
 ### Page d'accueil
-![Page d'accueil](images/pade_Accueil.png)
+![Page d'accueil](images/page_Accueil.png)
 
 ### Formulaire de connexion
 ![Login](images/Connexion.png)
+### Formulaire d'inscription
+![Login](images/Inscription.png)
 
 ## Comment exécuter ce projet
 
